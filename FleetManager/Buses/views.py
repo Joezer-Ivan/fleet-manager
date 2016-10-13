@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-# from BeautifulSoup import BeautifulSoup 
+# from BeautifulSoup import BeautifulSoup
 # import mechanize
 # Create your views here.
-import mechanicalsoup 
+import mechanicalsoup
 from bs4 import BeautifulSoup
 from django.template.response import TemplateResponse
 import re
@@ -39,15 +39,15 @@ def areas_of_chennai(request):
 		dic[td[0].getText()]=(lat,lon)
 		# for i,cells in enumerate(td):
 		# 	print(cells.getText(),end='|')
-			
-		
+
+
 	# for towns in dic:
 	# 	print(towns,dic[towns])
 	return TemplateResponse(request,"index.html",{'towns':dic})
 
 
 def mtc(request):
-	
+
 	browser = mechanicalsoup.Browser(soup_config={"features":"html.parser"})
 	page = browser.get("http://www.mtcbus.org/Routes.asp")
 
@@ -78,20 +78,20 @@ def mtc(request):
 					dic[place] = str(route.getText())
 
 
-											
-	
+
+
 	for place in dic:
 		ob = Routes(stage=str(place),route = str(dic[place]))
 		ob.save()
 
 
-	return HttpResponse("done")		
+	return HttpResponse("done")
 
 
 
 def Bus_route(request):
 	ob = Routes.objects.all().filter(stage = "PORUR")
-	ob2 = Routes.objects.values("route").filter(stage = "PORUR")	
+	ob2 = Routes.objects.values("route").filter(stage = "PORUR")
 	ob2 = list(ob2)
 	route = ob2[0]['route'].replace('(','')
 	route = ob2[0]['route'].replace(')','')
@@ -100,5 +100,5 @@ def Bus_route(request):
 	route = route.replace("'","")
 	route = route.split(',')
 
-	# return HttpResponse(route)		
+	# return HttpResponse(route)
 	return TemplateResponse(request,"routes.html",{'ob':ob,'ob2':route})
