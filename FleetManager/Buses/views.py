@@ -102,3 +102,5 @@ def Bus_route(request):
 
 	# return HttpResponse(route)
 	return TemplateResponse(request,"routes.html",{'ob':ob,'ob2':route})
+
+	

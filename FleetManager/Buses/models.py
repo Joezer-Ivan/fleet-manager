@@ -47,7 +47,7 @@ class Bus(models.Model):
 		return self.license_plate
 
 
-class Location(models.Model):
+class LocationHistory(models.Model):
 	license_plate = models.ForeignKey('Bus', on_delete = models.CASCADE)
 	lattitude = models.CharField(max_length = 20)
 	longitute = models.CharField(max_length = 20)
@@ -55,3 +55,13 @@ class Location(models.Model):
 
 	def __str__(self):
 		return self.license_plate.license_plate + ' | ' + self.lattitude + ', ' + self.longitute
+
+
+class CurrentLocation(models.Model):
+	license_plate = models.CharField(max_length = 10, primary_key = True)
+	lattitude = models.CharField(max_length = 20)
+	longitute = models.CharField(max_length = 20)
+	passengers = models.IntegerField('Number of passengers')
+
+	def __str__(self):
+		return self.license_plate + ' | ' + self.lattitude + ', ' + self.longitute
