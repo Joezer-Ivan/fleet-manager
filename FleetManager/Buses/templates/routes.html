@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Routes</title>
+</head>
+<body>
+{% for stages in ob %}
+	{{stages.stage}} - 
+
+
+	{% for route in ob2 %}
+		{{route}}
+	{% endfor %}
+	<br>
+
+{% endfor %}
+</body>
+</html>

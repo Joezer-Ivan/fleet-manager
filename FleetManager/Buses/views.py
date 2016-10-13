@@ -6,7 +6,7 @@ from django.http import HttpResponse
 import mechanicalsoup 
 from bs4 import BeautifulSoup
 from django.template.response import TemplateResponse
-
+import re
 from .models import *
 
 def areas_of_chennai(request):
@@ -86,3 +86,19 @@ def mtc(request):
 
 
 	return HttpResponse("done")		
+
+
+
+def Bus_route(request):
+	ob = Routes.objects.all().filter(stage = "PORUR")
+	ob2 = Routes.objects.values("route").filter(stage = "PORUR")	
+	ob2 = list(ob2)
+	route = ob2[0]['route'].replace('(','')
+	route = ob2[0]['route'].replace(')','')
+
+	route = re.sub(r"\(","",route)
+	route = route.replace("'","")
+	route = route.split(',')
+
+	# return HttpResponse(route)		
+	return TemplateResponse(request,"routes.html",{'ob':ob,'ob2':route})

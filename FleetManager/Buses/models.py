@@ -7,4 +7,4 @@ class Routes(models.Model):
 	route = models.CharField(max_length = 400)
 
 	def __str__(self):
-		return "stage"+self.stage+"|"+" route"+self.route
+		return self.stage+self.route
