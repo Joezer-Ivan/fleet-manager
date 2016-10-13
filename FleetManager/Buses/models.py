@@ -40,7 +40,7 @@ class Bus(models.Model):
 	)
 
 	license_plate = models.CharField(max_length = 10, primary_key = True)
-	route = models.ForeignKey('Route', on_delete = PROTECT)
+	route = models.ForeignKey('Route', on_delete = models.PROTECT)
 	bus_type = models.CharField(max_length = 2, choices = BUS_TYPES)
 
 	def __str__(self):
