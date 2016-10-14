@@ -92,6 +92,8 @@ def mtc(request):
 def Bus_route(request):
 	ob = Routes.objects.all().filter(stage = "PORUR")
 	ob2 = Routes.objects.values("route").filter(stage = "PORUR")	
+
+
 	ob2 = list(ob2)
 	route = ob2[0]['route'].replace('(','')
 	route = ob2[0]['route'].replace(')','')
@@ -100,5 +102,17 @@ def Bus_route(request):
 	route = route.replace("'","")
 	route = route.split(',')
 
+	ob = Routes.objects.all().filter(stage = "GUINDY R.S")
+	ob2 = Routes.objects.values("route").filter(stage = "GUINDY R.S")
+
+	ob2 = list(ob2)
+	route1 = ob2[0]['route'].replace('(','')
+	route1 = ob2[0]['route'].replace(')','')
+
+	route1 = re.sub(r"\(","",route1)
+	route1 = route1.replace("'","")
+	route1 = route1.split(',')
+
+	common_routes = list(set(route).intersection(route1))
 	# return HttpResponse(route)		
-	return TemplateResponse(request,"routes.html",{'ob':ob,'ob2':route})
+	return TemplateResponse(request,"routes.html",{'ob':ob,'ob2':route,'ob3':route1,'ob4':common_routes})

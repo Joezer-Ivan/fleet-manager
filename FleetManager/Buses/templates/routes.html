@@ -5,7 +5,7 @@
 </head>
 <body>
 {% for stages in ob %}
-	{{stages.stage}} - 
+	Source - 
 
 
 	{% for route in ob2 %}
@@ -14,5 +14,19 @@
 	<br>
 
 {% endfor %}
+<br>
+<br><br><br>
+Destination - 
+{% for route in ob3 %}
+		{{route}}
+	{% endfor %}
+
+<br><br><br>
+
+Busses from source to destination-
+{% for route in ob4 %}
+		{{route}}
+	{% endfor %}
+
 </body>
 </html>
