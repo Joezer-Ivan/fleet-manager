@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Choice</title>
+</head>
+<body>
+<form action="routes/" method="POST">
+	{% csrf_token %}
+Source :
+<select name="from">
+	{% for routes in ob %}
+
+	<option value="{{routes}}" >{{routes}}</option>
+	{% endfor %}
+</select>
+Destination:
+<select name="to">
+	{% for routes in ob %}
+
+	<option value="{{routes}}" >{{routes}}</option>
+	{% endfor %}
+</select>
+<input type="submit" value="GO">
+</form>
+</body>
+</html>

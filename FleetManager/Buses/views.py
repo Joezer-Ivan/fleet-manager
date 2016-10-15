@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # from BeautifulSoup import BeautifulSoup 
 # import mechanize
-# Create your views here.
+
 import mechanicalsoup 
 from bs4 import BeautifulSoup
 from django.template.response import TemplateResponse
@@ -88,10 +88,23 @@ def mtc(request):
 	return HttpResponse("done")		
 
 
+def Choose_Location(request):
+	ob = Routes.objects.all().values_list("stage")
+	route_list = []
+	for i,route in enumerate(ob):
+		route_list.append(re.sub("\S*\d\S*", "", route[0]).strip())
+
+	route_list = list(filter(None, route_list))		
+	route_list = sorted(route_list)
+	return TemplateResponse(request,"choice.html",{'ob':route_list})
+
 
 def Bus_route(request):
-	ob = Routes.objects.all().filter(stage = "PORUR")
-	ob2 = Routes.objects.values("route").filter(stage = "PORUR")	
+
+	source = request.POST["from"]
+	dest = request.POST["to"]
+	ob = Routes.objects.all().filter(stage = str(source))
+	ob2 = Routes.objects.values("route").filter(stage = str(source))	
 
 
 	ob2 = list(ob2)
@@ -102,8 +115,8 @@ def Bus_route(request):
 	route = route.replace("'","")
 	route = route.split(',')
 
-	ob = Routes.objects.all().filter(stage = "GUINDY R.S")
-	ob2 = Routes.objects.values("route").filter(stage = "GUINDY R.S")
+	ob = Routes.objects.all().filter(stage = str(dest))
+	ob2 = Routes.objects.values("route").filter(stage = str(dest))
 
 	ob2 = list(ob2)
 	route1 = ob2[0]['route'].replace('(','')
@@ -114,5 +127,7 @@ def Bus_route(request):
 	route1 = route1.split(',')
 
 	common_routes = list(set(route).intersection(route1))
+
 	# return HttpResponse(route)		
-	return TemplateResponse(request,"routes.html",{'ob':ob,'ob2':route,'ob3':route1,'ob4':common_routes})
+	return TemplateResponse(request,"routes.html",{'source':source,'dest':dest,'ob':ob,'ob2':route,'ob3':route1,'ob4':common_routes})
+
