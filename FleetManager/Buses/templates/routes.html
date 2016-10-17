@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+{% load staticfiles %}
 	<title>Routes</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/materialize.min.css' %}">
+<script src="{% static 'js/materialize.min.js' %}"></script>
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="{% static 'js/jquery-2.1.3.min.js' %}"></script> 
 </head>
 <body>
 {% for stages in ob %}
@@ -24,9 +29,26 @@
 <br><br><br>
 
 Busses from source to destination-
-{% for route in ob4 %}
-		{{route}}
-	{% endfor %}
+<br>
+<table border="1px">
+<tr>
+	<th>Bus Route</th>
+	<th>Occupancy</th>
+	<th>ETA(mins)</th>
+	<th>Latitude</th>
+	<th>Longitude</th>
+</tr>
+{% for route,crowd,eta,lat,lon in ob4 %}
+<tr>
 
+	<td>	{{route}}</td>
+	<td>	{{crowd}}</td>
+	<td>	{{eta}}</td>
+	<td>	{{lat}}</td>
+	<td>	{{lon}}</td>
+</tr>
+
+	{% endfor %}
+</table>
 </body>
 </html>

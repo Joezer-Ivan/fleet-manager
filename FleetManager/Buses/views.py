@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # from BeautifulSoup import BeautifulSoup 
 # import mechanize
-
+import random
 import mechanicalsoup 
 from bs4 import BeautifulSoup
 from django.template.response import TemplateResponse
@@ -37,12 +37,9 @@ def areas_of_chennai(request):
 		lon = lon.encode('ascii','ignore')
 		lon = float(lon)
 		dic[td[0].getText()]=(lat,lon)
-		# for i,cells in enumerate(td):
-		# 	print(cells.getText(),end='|')
+		
 			
 		
-	# for towns in dic:
-	# 	print(towns,dic[towns])
 	return TemplateResponse(request,"index.html",{'towns':dic})
 
 
@@ -128,6 +125,19 @@ def Bus_route(request):
 
 	common_routes = list(set(route).intersection(route1))
 
+	occupancy = []
+	eta = []
+	lat = []
+	lon = []
+	for indices in common_routes:
+		occupancy.append(random.randint(10,80))
+		eta.append(random.randint(1,60))
+		lat.append(random.uniform(12.0067074,13.586019))
+		lon.append(random.uniform(79.2022314,80.021088))
+
+	ob4 = zip(common_routes,occupancy,eta,lat,lon)	
+	ob4 = sorted(ob4, key=lambda x: x[2])
+	
 	# return HttpResponse(route)		
-	return TemplateResponse(request,"routes.html",{'source':source,'dest':dest,'ob':ob,'ob2':route,'ob3':route1,'ob4':common_routes})
+	return TemplateResponse(request,"routes.html",{'source':source,'dest':dest,'ob':ob,'ob2':route,'ob3':route1,'ob4':ob4,'occupancy':occupancy,'eta':eta})
 
