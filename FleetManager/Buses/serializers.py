@@ -4,4 +4,4 @@ from Buses.models import CurrentLocation
 class CurrentLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CurrentLocation
-        fields = ('license_plate', 'lattitude', 'longitute', 'passengers')
+        fields = ('license_plate', 'lattitude', 'longitude', 'passengers')
