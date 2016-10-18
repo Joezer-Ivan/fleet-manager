@@ -15,11 +15,9 @@
 
 </head>
 <body>
-<div class="row">
-	<div class="row">
-	</div>
-</div>
+	
 <center>
+<img src="{% static "img/bannerMTC.jpg" %}" alt="MTC Banner"/>
 <form action="routes/" method="POST">
 	{% csrf_token %}
 	<div class="form">
@@ -32,7 +30,7 @@ Source :
 	<option value="{{routes}}" >{{routes}}</option>
 	{% endfor %}
     </select>
- 
+
 	</div>
 
 	<br>
