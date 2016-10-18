@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-# from BeautifulSoup import BeautifulSoup 
+# from BeautifulSoup import BeautifulSoup
 # import mechanize
 
-import mechanicalsoup 
+
+from Buses.serializers import CurrentLocationSerializer
+from rest_framework import generics
+import mechanicalsoup
 from bs4 import BeautifulSoup
 from django.template.response import TemplateResponse
 import re
@@ -39,15 +42,15 @@ def areas_of_chennai(request):
 		dic[td[0].getText()]=(lat,lon)
 		# for i,cells in enumerate(td):
 		# 	print(cells.getText(),end='|')
-			
-		
+
+
 	# for towns in dic:
 	# 	print(towns,dic[towns])
 	return TemplateResponse(request,"index.html",{'towns':dic})
 
 
 def mtc(request):
-	
+
 	browser = mechanicalsoup.Browser(soup_config={"features":"html.parser"})
 	page = browser.get("http://www.mtcbus.org/Routes.asp")
 
@@ -78,14 +81,14 @@ def mtc(request):
 					dic[place] = str(route.getText())
 
 
-											
-	
+
+
 	for place in dic:
 		ob = Routes(stage=str(place),route = str(dic[place]))
 		ob.save()
 
 
-	return HttpResponse("done")		
+	return HttpResponse("done")
 
 
 def Choose_Location(request):
@@ -94,7 +97,7 @@ def Choose_Location(request):
 	for i,route in enumerate(ob):
 		route_list.append(re.sub("\S*\d\S*", "", route[0]).strip())
 
-	route_list = list(filter(None, route_list))		
+	route_list = list(filter(None, route_list))
 	route_list = sorted(route_list)
 	return TemplateResponse(request,"choice.html",{'ob':route_list})
 
@@ -104,7 +107,7 @@ def Bus_route(request):
 	source = request.POST["from"]
 	dest = request.POST["to"]
 	ob = Routes.objects.all().filter(stage = str(source))
-	ob2 = Routes.objects.values("route").filter(stage = str(source))	
+	ob2 = Routes.objects.values("route").filter(stage = str(source))
 
 
 	ob2 = list(ob2)
@@ -128,6 +131,17 @@ def Bus_route(request):
 
 	common_routes = list(set(route).intersection(route1))
 
-	# return HttpResponse(route)		
+	# return HttpResponse(route)
 	return TemplateResponse(request,"routes.html",{'source':source,'dest':dest,'ob':ob,'ob2':route,'ob3':route1,'ob4':common_routes})
 
+
+
+class CurrentLocationList(generics.ListCreateAPIView):
+    queryset = CurrentLocation.objects.all()
+    serializer_class = CurrentLocationSerializer
+
+
+class CurrentLocationDetail(generics.RetrieveUpdateDestroyAPIView):
+	queryset = CurrentLocation.objects.all()
+	serializer_class = CurrentLocationSerializer
+	lookup_field = 'license_plate'
