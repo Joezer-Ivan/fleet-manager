@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 from django.template.response import TemplateResponse
 import re
 from .models import *
+from django.http import JsonResponse
+
 
 def areas_of_chennai(request):
 
@@ -158,3 +160,40 @@ class CurrentLocationDetail(generics.RetrieveUpdateDestroyAPIView):
 	queryset = CurrentLocation.objects.all()
 	serializer_class = CurrentLocationSerializer
 	lookup_field = 'license_plate'
+
+
+def APIRouteGet(request):
+	source = request.GET["from"]
+	dest = request.GET["to"]
+
+	ob = Routes.objects.all().filter(stage = str(source))
+	ob2 = Routes.objects.values("route").filter(stage = str(source))
+
+
+	ob2 = list(ob2)
+	route = ob2[0]['route'].replace('(','')
+	route = ob2[0]['route'].replace(')','')
+
+	route = re.sub(r"\(","",route)
+	route = route.replace("'","")
+	route = route.split(',')
+
+	ob = Routes.objects.all().filter(stage = str(dest))
+	ob2 = Routes.objects.values("route").filter(stage = str(dest))
+
+	ob2 = list(ob2)
+	route1 = ob2[0]['route'].replace('(','')
+	route1 = ob2[0]['route'].replace(')','')
+
+	route1 = re.sub(r"\(","",route1)
+	route1 = route1.replace("'","")
+	route1 = route1.split(',')
+
+	common_routes = list(set(route).intersection(route1))
+
+	json_obj = {}
+
+	for indices in common_routes:
+		json_obj[indices] = {'occupancy':random.randint(10,80), 'eta':random.randint(1,60), 'lat':random.uniform(12.0067074,13.586019), 'lon':random.uniform(79.2022314,80.021088)}
+
+	return JsonResponse(json_obj)
