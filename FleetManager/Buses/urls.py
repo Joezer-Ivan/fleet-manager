@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^$', views.Choose_Location,  name = 'Choose_Location'),
     url(r'^api/$', views.CurrentLocationList.as_view()),
     url(r'^api/(?P<license_plate>[A-Z][A-Z][0-9][0-9][A-Z][A-Z][0-9][0-9][0-9][0-9])/$', views.CurrentLocationDetail.as_view()),
+    url(r'^api/routes/(?P<source>[A-Z+.]+)=(?P<dest>[A-Z]+)/$', views.APIRouteGet, name = 'APIRouteGet'),
 
 ]
 
