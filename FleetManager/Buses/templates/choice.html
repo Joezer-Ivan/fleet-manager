@@ -23,26 +23,26 @@
 	<div class="form">
 	<div class="row">
 Source :
-    <select name="from">
+<center>    <select name="from">
 <option value="" disabled selected>Choose your location</option>
       {% for routes in ob %}
 
 	<option value="{{routes}}" >{{routes}}</option>
 	{% endfor %}
-    </select>
+    </select></center>
 
 	</div>
 
 	<br>
 	<div class="row">
 Destination:
-    <select name="to">
+  <center>  <select name="to">
 <option value="" disabled selected>Choose your location</option>
 
       {% for routes in ob %}
 	<option value="{{routes}}" >{{routes}}</option>
 	{% endfor %}
-    </select>
+    </select></center>
 	</div>
 	<br>
 
