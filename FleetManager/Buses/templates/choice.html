@@ -15,9 +15,13 @@
 
 </head>
 <body>
-	
+
 <center>
-<img src="{% static "img/bannerMTC.jpg" %}" alt="MTC Banner"/>
+<div>
+	<img src="{% static "img/thumb.jpg" %}" alt="MTC Logo" style="height: 148px"/>
+	<img src="{% static "img/bannerMTC.jpg" %}" alt="MTC Banner"/>
+	<img src="{% static "img/2000px-TamilNadu_Logo.jpg" %}" alt="TN Gov Logo" style="height: 148px"/>
+</div>
 <form action="routes/" method="POST">
 	{% csrf_token %}
 	<div class="form">
