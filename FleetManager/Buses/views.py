@@ -162,10 +162,9 @@ class CurrentLocationDetail(generics.RetrieveUpdateDestroyAPIView):
 	lookup_field = 'license_plate'
 
 
-def APIRouteGet(request, source, dest):
-
-	source = source.replace('+', ' ')
-	dest = dest.replace('+', ' ')
+def APIRouteGet(request):
+	source = request.GET["from"]
+	dest = request.GET["to"]
 
 	ob = Routes.objects.all().filter(stage = str(source))
 	ob2 = Routes.objects.values("route").filter(stage = str(source))
