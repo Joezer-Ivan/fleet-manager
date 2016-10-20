@@ -213,8 +213,10 @@ def APIRouteGet(request):
 
 	json_obj = {}
 
+	i = 0;
 	for indices in common_routes:
-		json_obj[indices] = {'occupancy':random.randint(10,80), 'eta':random.randint(1,60), 'lat':random.uniform(12.0067074,13.586019), 'lon':random.uniform(79.2022314,80.021088)}
+		json_obj[i] = {'route_no':indices, 'occupancy':random.randint(10,80), 'eta':random.randint(1,60), 'lat':random.uniform(12.0067074,13.586019), 'lon':random.uniform(79.2022314,80.021088)}
+		i += 1
 
 	return JsonResponse(json_obj)
 
@@ -228,4 +230,4 @@ def trial(request):
 
 
 
-	return HttpResponse(result["results"][0]["geometry"]["location"]["lat"])	
+	return HttpResponse(result["results"][0]["geometry"]["location"]["lat"])
