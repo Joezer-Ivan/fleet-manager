@@ -22,11 +22,12 @@
 	<img src="{% static "img/bannerMTC.jpg" %}" alt="MTC Banner"/>
 	<img src="{% static "img/2000px-TamilNadu_Logo.jpg" %}" alt="TN Gov Logo" style="height: 148px"/>
 </div>
+<br><br><br>
 <form action="routes/" method="POST">
 	{% csrf_token %}
 	<div class="form">
 	<div class="row">
-Source :
+<b><font color="green">Source :</font></b>
 <center>    <select name="from">
 <option value="" disabled selected>Choose your location</option>
       {% for routes in ob %}
@@ -39,7 +40,7 @@ Source :
 
 	<br>
 	<div class="row">
-Destination:
+<b><font color="green">Destination:</font></b>
   <center>  <select name="to">
 <option value="" disabled selected>Choose your location</option>
 
@@ -50,7 +51,7 @@ Destination:
 	</div>
 	<br>
 
-<input type="submit" class="waves-effect waves-light btn" value="GO">
+<input type="submit" class="btn-success btn" value="GO">
 </div>
 </form>
 </center>

@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^api/(?P<license_plate>[A-Z][A-Z][0-9][0-9][A-Z][A-Z][0-9][0-9][0-9][0-9])/$', views.CurrentLocationDetail.as_view()),
     #send a GET request to get data... an example http://localhost:8000/api/routes/?from=POONAMALLEE&to=GUINDY+R.S
     url(r'^api/routes/$', views.APIRouteGet, name = 'APIRouteGet'),
+    url(r'^trial$', views.trial, name = 'trial'),
 
 ]
 

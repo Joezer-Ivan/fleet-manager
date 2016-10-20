@@ -12,6 +12,8 @@ from django.template.response import TemplateResponse
 import re
 from .models import *
 from django.http import JsonResponse
+import requests
+import json
 
 
 def areas_of_chennai(request):
@@ -133,6 +135,18 @@ def Bus_route(request):
 
 	common_routes = list(set(route).intersection(route1))
 
+	url = "https://maps.googleapis.com/maps/api/geocode/json?address="+source+",chennai&key=AIzaSyCmpS9RwVmQLBCxTOZ9u5hrQtPw3yESprA"
+	r = requests.post(url,verify=False)
+	result = r.json()
+	src_lat = result["results"][0]["geometry"]["location"]["lat"]
+	src_lng = result["results"][0]["geometry"]["location"]["lng"]
+
+	url = "https://maps.googleapis.com/maps/api/geocode/json?address="+dest+",chennai&key=AIzaSyCmpS9RwVmQLBCxTOZ9u5hrQtPw3yESprA"
+	r = requests.post(url,verify=False)
+	result = r.json()
+	dest_lat = result["results"][0]["geometry"]["location"]["lat"]
+	dest_lng = result["results"][0]["geometry"]["location"]["lng"]
+
 	occupancy = []
 	eta = []
 	lat = []
@@ -140,14 +154,20 @@ def Bus_route(request):
 	for indices in common_routes:
 		occupancy.append(random.randint(10,80))
 		eta.append(random.randint(1,60))
-		lat.append(random.uniform(12.0067074,13.586019))
-		lon.append(random.uniform(79.2022314,80.021088))
+		lat.append(random.uniform(src_lat,dest_lat))
+		lon.append(random.uniform(src_lng,dest_lng))
 
 	ob4 = zip(common_routes,occupancy,eta,lat,lon)
 	ob4 = sorted(ob4, key=lambda x: x[2])
 
+	ob5 = zip(common_routes,lat,lon)
+	ob5 = sorted(ob5, key=lambda x: x[1])
+	coords = [list(i) for i in zip(common_routes,lat,lon,eta,occupancy)]
+
+	# ob5 = sorted(ob5, key=lambda x: x[2])
+
 	# return HttpResponse(route)
-	return TemplateResponse(request,"routes.html",{'source':source,'dest':dest,'ob':ob,'ob2':route,'ob3':route1,'ob4':ob4,'occupancy':occupancy,'eta':eta})
+	return TemplateResponse(request,"routes.html",{'source':source,'dest':dest,'ob':ob,'ob2':route,'ob5':coords,'ob3':route1,'ob4':ob4,'occupancy':occupancy,'eta':eta})
 
 
 
@@ -197,3 +217,15 @@ def APIRouteGet(request):
 		json_obj[indices] = {'occupancy':random.randint(10,80), 'eta':random.randint(1,60), 'lat':random.uniform(12.0067074,13.586019), 'lon':random.uniform(79.2022314,80.021088)}
 
 	return JsonResponse(json_obj)
+
+
+def trial(request):
+	url = "https://maps.googleapis.com/maps/api/geocode/json?address=tambaram,chennai&key=AIzaSyCmpS9RwVmQLBCxTOZ9u5hrQtPw3yESprA"
+	address = "pammal,chennai"
+	api_key = "AIzaSyCmpS9RwVmQLBCxTOZ9u5hrQtPw3yESprA"
+	r = requests.post(url,verify=False)
+	result = r.json()
+
+
+
+	return HttpResponse(result["results"][0]["geometry"]["location"]["lat"])	
